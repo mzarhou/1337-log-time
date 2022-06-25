@@ -25,24 +25,25 @@ function extractData() {
 
 // sum month data from 28 to 27
 function sumMonthHours(monthData, prevMonthData) {
-  const prevMonthResult = prevMonthData.reduce((res, current) => {
+  const prevMonthResultMinutes = prevMonthData.reduce((res, current) => {
     [hours, minutes] = current.hoursCount.split("h");
     return parseInt(current.day) >= 28
       ? res + parseInt(minutes) + parseInt(hours) * 60
       : res;
   }, 0);
-  const monthResult = monthData.reduce((res, current) => {
+  const monthResultMinutes = monthData.reduce((res, current) => {
     [hours, minutes] = current.hoursCount.split("h");
     return parseInt(current.day) < 28
       ? res + parseInt(minutes) + parseInt(hours) * 60
       : res;
   }, 0);
-  const result = prevMonthResult + monthResult;
-  return [Math.floor(result / 60), result % 60];
+  const minutesCount = prevMonthResultMinutes + monthResultMinutes;
+  return [Math.floor(minutesCount / 60), minutesCount % 60];
 }
 
 function displayData(text) {
   const targetElement = document.querySelectorAll(".profile-title")[2];
+
   const span = document.createElement("span");
   span.textContent = text;
   targetElement?.appendChild(span);
@@ -53,5 +54,6 @@ function main() {
   if (data.size == 0) return;
   const arr = Array.from(data);
   const [lastMonthData, prevMonthData] = [arr.pop()[1], arr.pop()[1]];
-  displayData(sumMonthHours(lastMonthData, prevMonthData).join("h"));
+  const [hours, minutes] = sumMonthHours(lastMonthData, prevMonthData);
+  displayData([hours, minutes].join("h"));
 }

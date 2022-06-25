@@ -48,8 +48,8 @@ function createDisplayElement(text, withStyle = false) {
   span.style["display"] = "flex";
   span.style["justify-content"] = "center";
   span.style["font-weight"] = "500";
-  span.style["font-size"] = "large";
-  span.style["color"] = "#0EA5E9";
+  span.style["font-size"] = "larger";
+  span.style["color"] = "rgba(0, 186, 188, 100)";
   return span;
 }
 

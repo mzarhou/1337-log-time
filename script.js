@@ -41,12 +41,33 @@ function sumMonthHours(monthData, prevMonthData) {
   return [Math.floor(minutesCount / 60), minutesCount % 60];
 }
 
-function displayData(text) {
-  const targetElement = document.querySelectorAll(".profile-title")[2];
-
+function createDisplayElement(text, withStyle = false) {
   const span = document.createElement("span");
   span.textContent = text;
-  targetElement?.appendChild(span);
+  if (!withStyle) return span;
+  span.style["display"] = "flex";
+  span.style["justify-content"] = "center";
+  span.style["font-weight"] = "500";
+  span.style["font-size"] = "large";
+  span.style["color"] = "#0EA5E9";
+  return span;
+}
+
+function displayData(text) {
+  let targetElement = document.querySelector("#locations");
+  targetElement ??= document.querySelectorAll(".profile-title")[2];
+  const displayElement = createDisplayElement(
+    text,
+    targetElement.id === "locations"
+  );
+  if (targetElement.id === "locations") {
+    let innerHtml = targetElement.innerHTML;
+    targetElement.innerHTML = null;
+    targetElement.appendChild(displayElement);
+    targetElement.innerHTML += innerHtml;
+  } else {
+    targetElement?.appendChild(displayElement);
+  }
 }
 
 function main() {

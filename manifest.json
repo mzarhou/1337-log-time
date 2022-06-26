@@ -1,6 +1,6 @@
 {
     "name": "1337 log time",
-    "version": "1.0",
+    "version": "1.0.1",
     "description": "simple extension to calculate log time",
     "permissions": ["activeTab"],
     "action": {

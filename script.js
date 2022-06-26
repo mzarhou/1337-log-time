@@ -61,10 +61,7 @@ function displayData(text) {
     targetElement.id === "locations"
   );
   if (targetElement.id === "locations") {
-    let innerHtml = targetElement.innerHTML;
-    targetElement.innerHTML = null;
-    targetElement.appendChild(displayElement);
-    targetElement.innerHTML += innerHtml;
+    targetElement.insertBefore(displayElement, targetElement.firstChild);
   } else {
     targetElement?.appendChild(displayElement);
   }

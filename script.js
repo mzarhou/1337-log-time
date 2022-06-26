@@ -23,21 +23,28 @@ function extractData() {
   return result;
 }
 
+function sumHours(monthData, isDayIncluded) {
+  return monthData.reduce((res, current) => {
+    [hours, minutes] = current.hoursCount.split("h");
+    return isDayIncluded(current.day)
+      ? res + parseInt(minutes) + parseInt(hours) * 60
+      : res;
+  }, 0);
+}
+
 // sum month data from 28 to 27
-function sumMonthHours(monthData, prevMonthData) {
-  const prevMonthResultMinutes = prevMonthData.reduce((res, current) => {
-    [hours, minutes] = current.hoursCount.split("h");
-    return parseInt(current.day) >= 28
-      ? res + parseInt(minutes) + parseInt(hours) * 60
-      : res;
-  }, 0);
-  const monthResultMinutes = monthData.reduce((res, current) => {
-    [hours, minutes] = current.hoursCount.split("h");
-    return parseInt(current.day) < 28
-      ? res + parseInt(minutes) + parseInt(hours) * 60
-      : res;
-  }, 0);
-  const minutesCount = prevMonthResultMinutes + monthResultMinutes;
+function sumMonthHours(currentMonthData, prevMonthData) {
+  let minutesCount = 0;
+  const lastActiveDayInCurrentMonth =
+    currentMonthData[currentMonthData.length - 1];
+  if (parseInt(lastActiveDayInCurrentMonth.day) >= 28) {
+    // if current day is >= 28 start counting from it
+    minutesCount = sumHours(currentMonthData, (day) => day >= 28);
+  } else {
+    const currentMonthCount = sumHours(currentMonthData, (day) => day < 28);
+    const prevMonthCount = sumHours(prevMonthData, (day) => day >= 28);
+    minutesCount = currentMonthCount + prevMonthCount;
+  }
   return [Math.floor(minutesCount / 60), minutesCount % 60];
 }
 

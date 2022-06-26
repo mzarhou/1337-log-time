@@ -12,11 +12,11 @@ function extractData() {
     }
     if (e.tagName == "g") {
       result.set(currentMonth, [
-        ...result.get(currentMonth),
         {
           day: e.querySelector("text").textContent,
           hoursCount: e.dataset.originalTitle,
         },
+        ...result.get(currentMonth),
       ]);
     }
   });
@@ -35,8 +35,7 @@ function sumHours(monthData, isDayIncluded) {
 // sum month data from 28 to 27
 function sumMonthHours(currentMonthData, prevMonthData) {
   let minutesCount = 0;
-  const lastActiveDayInCurrentMonth =
-    currentMonthData[currentMonthData.length - 1];
+  const lastActiveDayInCurrentMonth = currentMonthData[0];
   if (parseInt(lastActiveDayInCurrentMonth.day) >= 28) {
     // if current day is >= 28 start counting from it
     minutesCount = sumHours(currentMonthData, (day) => day >= 28);
